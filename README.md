@@ -42,21 +42,7 @@ TESTING usage:
 
 ## Install
 
+
 ```shell
-#Step 1: cloning the repository
-if [ -d "$HOME/.phptt" ]; then
-    rm -rf $HOME/.phptt;
-fi
-git clone https://github.com/PHPTestFestBrasil/phptt $HOME/.phptt;
-
-#Step 2: linking into /usr/local/bin/
-if [ -L "/usr/local/bin/phptt" ] ; then
-    rm /usr/local/bin/phptt;
-fi
-ln -s $HOME/.phptt/bin/phptt.sh /usr/local/bin/phptt;
-
-#Step 3: applying exec permissions
-chmod +x /usr/local/bin/phptt;
-
-#Success! phptt command was added to your /usr/local/bin/ and can be used globally
+curl -s https://raw.githubusercontent.com/PHPTestFestBrasil/phptt/master/bin/install.sh | bash
 ```

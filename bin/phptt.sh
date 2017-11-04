@@ -91,8 +91,10 @@ function executeCommand()
     pushd `dirname $0` > /dev/null
     SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
     popd > /dev/null
-    
-    source $SCRIPTPATH/bin/phptt-${command}.sh
+
+    print "$SCRIPTPATH";
+    print "$0";
+    source $SCRIPTPATH/phptt-${command}
     "execute${commandFunction}" ${_COMMAND_ARGS};
     
 }
