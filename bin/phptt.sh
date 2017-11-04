@@ -92,11 +92,11 @@ function executeCommand()
     SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
     popd > /dev/null
 
-    print "$SCRIPTPATH";
-    print "$0";
+    printf "$SCRIPTPATH";
+    printf "$0";
     source $SCRIPTPATH/phptt-${command}
     "execute${commandFunction}" ${_COMMAND_ARGS};
-    
+
 }
 
 function main()
