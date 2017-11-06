@@ -38,8 +38,9 @@ function singleTest()
     docker run --rm -i -t \
         -v ${_TEST_FILE_DIR}/${_TEST_VERSION}/:/usr/src/phpt/ \
         phptestfestbrasil/phptt:${_TEST_VERSION} \
-        make lcov TESTS=/usr/src/phpt/${_TEST_FILENAME} \
-        | sed -e "s/Build complete./Test build successfully./" -e "s/Don't forget to run 'make lcov'./=\)/";
+        bash -c "make lcov TESTS=/usr/src/phpt/${_TEST_FILENAME}; rm -rf /usr/src/phpt/lcov_html; mv /usr/src/php/lcov_html/ /usr/src/phpt/lcov_html/";
+    printf "${_GREEN}[OK]${_NC} Report is available in: ...\n";
+    printf "    ${_GREEN}${_TEST_FILE_DIR}/${_TEST_VERSION}/lcov_html/index.html${_NC}\n";
 }
 
 function executeLcov()
