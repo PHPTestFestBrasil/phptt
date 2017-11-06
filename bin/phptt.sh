@@ -49,16 +49,25 @@ function displayHelp()
 
 function updateAll()
 {
-    printf "${_YELLOW}[Update 1/2]${_NC} Updating phptt scripts...\n"
-    git pull;
-    printf "${_GREEN}[Update 1/2]${_NC} Scripts updated!\n"
-    printf "${_YELLOW}[Update 2/2]${_NC} Updating phptt Docker images...\n"
-    docker pull phptestfestbrasil/phptt:PHP_HEAD;
-    docker pull phptestfestbrasil/phptt:PHP_7_2;
-    docker pull phptestfestbrasil/phptt:PHP_7_1;
-    docker pull phptestfestbrasil/phptt:PHP_7_0;
-    docker pull phptestfestbrasil/phptt:PHP_5_6;
-    printf "${_GREEN}[Update 2/2]${_NC} Docker images updated!\n"
+    printf "${_YELLOW}[Update 1/3]${_NC} Updating phptt scripts...\n"
+    CWD=$(pwd) \
+        && cd $HOME/.phptt \
+        && git pull &>/dev/null \
+        && cd $CWD;
+    printf "${_GREEN}[Update 1/3]${_NC} Scripts updated!\n"
+    printf "${_YELLOW}[Update 2/3]${_NC} Updating phptt Docker images...\n"
+    echo \
+            phptestfestbrasil/phptt:PHP_HEAD \
+            phptestfestbrasil/phptt:PHP_7_2 \
+            phptestfestbrasil/phptt:PHP_7_1 \
+            phptestfestbrasil/phptt:PHP_7_0 \
+            phptestfestbrasil/phptt:PHP_5_6 \
+            | xargs -P10 -n1 docker pull &>/dev/null;
+    printf "${_GREEN}[Update 2/3]${_NC} Docker images updated!\n"
+    printf "${_YELLOW}[Update 3/3]${_NC} Removing old Docker images ...\n"
+    docker container prune \
+        && docker rmi $(docker images -f "dangling=true" -q) &>/dev/null;
+    printf "${_GREEN}[Update 3/3]${_NC} Old Docker images removed!\n"
     printf "${_GREEN}Your phptt is now fully updated.${_NC}\n"
 
     exit 0;
