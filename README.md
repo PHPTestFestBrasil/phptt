@@ -44,7 +44,7 @@ TESTING usage:
 
 
 ```shell
-curl -s https://git.io/phptt-install | bash
+curl -sL https://git.io/phptt-install | bash
 
 # https://git.io/phptt-install points to https://raw.githubusercontent.com/PHPTestFestBrasil/phptt/master/bin/install.sh
 ```
