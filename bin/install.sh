@@ -1,43 +1,56 @@
 #!/usr/bin/env bash
-_YELLOW='\033[1;33m' # yellow color
-_GREEN='\033[0;32m' # green color
-_NC='\033[0m' # no color
 
-printf "PHPTT installer started ...\n";
+set -e
+set -o pipefail
 
-printf "Step 1: cloning the repository to ${_YELLOW}$HOME/.phptt/bin/phptt.sh${_NC}\n";
-if [ -d "$HOME/.phptt" ]; then
-    rm -rf $HOME/.phptt;
-fi
-git clone https://github.com/PHPTestFestBrasil/phptt $HOME/.phptt;
+[[ $DEBUG ]] && set -x
 
-printf "Step 2: linking files \n"
+REPO_URL="https://github.com/PHPTestFestBrasil/phptt"
+REPO_DEST="${HOME}/.phptt2"
+BIN_DIR="${BIN_DIR:-/usr/local/bin}"
 
-files=("phptt-generate" "phptt-lcov" "phptt-test" "phptt");
+indent()
+{
+    sed "#^#    #"
+}
 
-for ((x=0; x < ${#files[*]}; x++)) ; do
-    printf "* ${_YELLOW} "${files[$x]}"${_NC} to ${_YELLOW}/usr/local/bin/${files[$x]}${_NC} ...\n";
-    if [ -L "/usr/local/bin/${files[$x]}" ] ; then
-        rm "/usr/local/bin/${files[$x]}";
-    fi
-    ln -s "$HOME/.phptt/bin/${files[$x]}.sh" "/usr/local/bin/${files[$x]}";
-done
+phptt_clone()
+{
+	echo "Step 1: cloning the repository to $REPO_DEST"
+	if [ -d $REPO_DEST ]
+	then
+	    rm -rf $REPO_DEST
+	fi
+	git clone $REPO_URL $REPO_DEST 2>&0 | indent
+	pushd $REPO_DEST
+}
 
+phptt_link()
+{
+	echo "Step 2: linking files "
+	for f in "phptt-generate" "phptt-lcov" "phptt-test" "phptt"
+	do
+	    pushd bin
+	    file_source="$(pwd)/${f}"
+	    file_destination="${BIN_DIR}/${f}"
+	    directory_destination=$(dirname $file_destination)
+	    echo "*  "${file_source}" to ${file_destination} ..."
+	    if [ ! -w "$directory_destination" ]
+	    then
+		echo "ERROR! $directory_destination is not writable."
+		echo "You can use BIN_DIR variable to tell us where you want to install."
+		exit 2
+	    fi
+	    if [ -L "${file_destination}" -o -f "${file_destination}" ]
+	    then
+		rm "${file_destination}"
+	    fi
+	    ln -s "${file_source}.sh" "${file_destination}"
+	    chmod a+x "${file_destination}"
+	    popd
+	done
+}
 
-printf "Step 3: applying exec permissions ...\n";
-for ((x=0; x < ${#files[*]}; x++)) ; do
-    chmod +x "/usr/local/bin/${files[$x]}";
-    printf "${_GREEN}Success! ${_NC}The ${_YELLOW}${files[$x]}${_NC} command was added to your ${_YELLOW}/usr/local/bin${_NC} folder and can be used globally.\n";
-done
-
-
-#print "${_YELLOW}phptt.sh${_NC} to ${_YELLOW}/usr/local/bin/phptt${_NC} ...\n";
-#if [ -L "/usr/local/bin/phptt" ] ; then
-#    rm /usr/local/bin/phptt;
-#fi
-#ln -s $HOME/.phptt/bin/phptt.sh /usr/local/bin/phptt;
-#
-#printf "Step 3: applying exec permissions ...\n";
-#chmod +x /usr/local/bin/phptt;
-#
-#printf "${_GREEN}Success! ${_NC}The ${_YELLOW}phptt${_NC} command was added to your ${_YELLOW}/usr/local/bin${_NC} folder and can be used globally.\n";
+echo "PHPTT installer started ..."
+phptt_clone | indent
+phptt_link | indent
