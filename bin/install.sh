@@ -30,7 +30,7 @@ phptt_link()
 	echo "Step 2: linking files "
 	for f in "phptt-generate" "phptt-lcov" "phptt-test" "phptt"
 	do
-	    pushd bin
+	    pushd ${REPO_DEST}/bin
 	    file_source="$(pwd)/${f}"
 	    file_destination="${BIN_DIR}/${f}"
 	    directory_destination=$(dirname $file_destination)
