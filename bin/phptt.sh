@@ -6,6 +6,10 @@ _NC='\033[0m' # no color
 
 _PHPTT_PHP_VERSION=PHP_HEAD;
 
+REPO_URL="https://github.com/PHPTestFestBrasil/phptt"
+REPO_DEST="${HOME}/.phptt2"
+BIN_DIR="${BIN_DIR:-/usr/local/bin}"
+
 function displayError()
 {
     local exitError=$1;
@@ -51,7 +55,7 @@ function updateAll()
 {
     printf "${_YELLOW}[Update 1/3]${_NC} Updating phptt scripts...\n"
     CWD=$(pwd) \
-        && cd $HOME/.phptt \
+        && cd REPO_DEST \
         && git pull &>/dev/null \
         && cd $CWD;
     printf "${_GREEN}[Update 1/3]${_NC} Scripts updated!\n"
