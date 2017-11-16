@@ -18,7 +18,7 @@ function parseLcovArgs()
 
 function executeLcovSuite()
 {
-    docker run --rm -i -t phptestfestbrasil/phptt:${_TEST_VERSION} make lcov;
+    docker run --rm -i phptestfestbrasil/phptt:${_TEST_VERSION} make lcov;
     exit 0;
 }
 
@@ -35,7 +35,7 @@ function singleTest()
 {
     mkdir -p ${_TEST_FILE_DIR}/${_TEST_VERSION}/;
     cp -r ${_TEST_FILE_PATH} ${_TEST_FILE_DIR}/${_TEST_VERSION}/;
-    docker run --rm -i -t \
+    docker run --rm -i \
         -v ${_TEST_FILE_DIR}/${_TEST_VERSION}/:/usr/src/phpt/ \
         phptestfestbrasil/phptt:${_TEST_VERSION} \
         bash -c "make lcov TESTS=/usr/src/phpt/${_TEST_FILENAME}; rm -rf /usr/src/phpt/lcov_html; mv /usr/src/php/lcov_html/ /usr/src/phpt/lcov_html/";
