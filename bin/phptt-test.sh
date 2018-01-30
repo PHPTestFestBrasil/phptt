@@ -18,7 +18,7 @@ function parseTestArgs()
 
 function executeTestSuite()
 {
-    docker run --rm -i phptestfestbrasil/phptt:${_TEST_VERSION} make test;
+    docker run -u php --rm -i phptestfestbrasil/phptt:${_TEST_VERSION} make test;
     exit 0;
 }
 
@@ -35,7 +35,7 @@ function singleTest()
 {
     mkdir -p ${_TEST_FILE_DIR}/${_TEST_VERSION}/;
     cp -r ${_TEST_FILE_PATH} ${_TEST_FILE_DIR}/${_TEST_VERSION}/;
-    docker run --rm -i \
+    docker run -u php --rm -i \
         -v ${_TEST_FILE_DIR}/${_TEST_VERSION}/:/usr/src/phpt/ \
         phptestfestbrasil/phptt:${_TEST_VERSION} \
         make test TESTS=/usr/src/phpt/${_TEST_FILENAME} \
