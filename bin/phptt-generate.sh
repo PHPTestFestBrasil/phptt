@@ -32,6 +32,6 @@ function executeGenerate()
 {
     parseGenerateArgs ${_COMMAND_ARGS};
     fixGenerateDir;
-    docker run --rm -i -w /usr/src/phpt -v ${_GENERATE_DIR}:/usr/src/phpt phptestfestbrasil/phptt:${_GENERATE_VERSION} \
+    docker run -u php --rm -i -w /usr/src/phpt -v ${_GENERATE_DIR}:/usr/src/phpt phptestfestbrasil/phptt:${_GENERATE_VERSION} \
         php /usr/src/php/scripts/dev/generate-phpt.phar ${_GENERATE_ARGS} | sed "s/php generate-phpt.php /phptt/";
 }
