@@ -11,8 +11,8 @@ function parseTestArgs()
 
     if [ -z "${_TEST_VERSION}" ]; then
         _TEST_VERSION=${_PHPTT_PHP_VERSION};
-    elif [ "${_TEST_VERSION}" != "PHP_HEAD" ] && [ "${_TEST_VERSION}" != "PHP_7_2" ] && [ "${_TEST_VERSION}" != "PHP_7_1" ] && [ "${_TEST_VERSION}" != "PHP_7_0" ] && [ "${_TEST_VERSION}" != "PHP_5_6" ]; then
-        displayHelp "The versions supported are PHP_5_6, PHP_7_0, PHP_7_1, PHP_7_2, PHP_HEAD or all to run in all available versions.";
+    elif [ "${_TEST_VERSION}" != "PHP_HEAD" ] && [ "${_TEST_VERSION}" != "PHP_7_4" ] && [ "${_TEST_VERSION}" != "PHP_7_3" ] && [ "${_TEST_VERSION}" != "PHP_7_2" ] && [ "${_TEST_VERSION}" != "PHP_7_1" ]; then
+        displayHelp "The versions supported are PHP_7_1, PHP_7_2, PHP_7_3, PHP_7_4, PHP_HEAD or all to run in all available versions.";
     fi
 }
 
@@ -48,10 +48,10 @@ function executeTest()
 
     if [ "${_TEST_VERSION}" = "all" ]; then
         $(git rev-parse --show-toplevel)/bin/phptt.sh ${_TEST_FILENAME} PHP_HEAD;
+        $(git rev-parse --show-toplevel)/bin/phptt.sh ${_TEST_FILENAME} PHP_7_4;
+        $(git rev-parse --show-toplevel)/bin/phptt.sh ${_TEST_FILENAME} PHP_7_3;
         $(git rev-parse --show-toplevel)/bin/phptt.sh ${_TEST_FILENAME} PHP_7_2;
         $(git rev-parse --show-toplevel)/bin/phptt.sh ${_TEST_FILENAME} PHP_7_1;
-        $(git rev-parse --show-toplevel)/bin/phptt.sh ${_TEST_FILENAME} PHP_7_0;
-        $(git rev-parse --show-toplevel)/bin/phptt.sh ${_TEST_FILENAME} PHP_5_6;
         exit 0;
     fi
 
