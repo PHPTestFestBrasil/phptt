@@ -62,10 +62,10 @@ function updateAll()
     printf "${_YELLOW}[Update 2/3]${_NC} Updating phptt Docker images...\n"
     echo \
             phptestfestbrasil/phptt:PHP_HEAD \
+            phptestfestbrasil/phptt:PHP_7_4 \
+            phptestfestbrasil/phptt:PHP_7_3 \
             phptestfestbrasil/phptt:PHP_7_2 \
             phptestfestbrasil/phptt:PHP_7_1 \
-            phptestfestbrasil/phptt:PHP_7_0 \
-            phptestfestbrasil/phptt:PHP_5_6 \
             | xargs -P10 -n1 docker pull &>/dev/null;
     printf "${_GREEN}[Update 2/3]${_NC} Docker images updated!\n"
     printf "${_YELLOW}[Update 3/3]${_NC} Removing old Docker images ...\n"
